@@ -15,6 +15,8 @@ namespace DemoWebCoreAPI.Models
         public string Address { get; set; }
         public string DOB { get; set; }
         public string Gender { get; set; }
-
+        public string Position { get; set; }
+        public string DOJ { get; set; }
+        public string Salrey { get; set; }
     }
 }
