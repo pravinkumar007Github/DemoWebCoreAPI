@@ -56,7 +56,7 @@ namespace DemoWebCoreAPI.Controllers
                             users.Salrey = dt.Rows[i]["Salray"].ToString();
                             UserList.Add(users);
                         }
-                        response.message = "Success";
+                        response.message = "Data Fetched Success";
                         response.users = UserList;
                     }
 
@@ -89,6 +89,8 @@ namespace DemoWebCoreAPI.Controllers
                 using (SqlCommand cmd = new SqlCommand("Insert_Emp_Data", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@Flag", SqlDbType.VarChar).Value = user.Flag;
+                    cmd.Parameters.Add("@Id", SqlDbType.VarChar).Value = Convert.ToInt32(user.Id);
                     cmd.Parameters.Add("@Fname", SqlDbType.VarChar).Value = user.EmpFname;
                     cmd.Parameters.Add("@Lname", SqlDbType.VarChar).Value = user.EmpLname;
                     cmd.Parameters.Add("@Department", SqlDbType.VarChar).Value = user.Department;
@@ -99,15 +101,39 @@ namespace DemoWebCoreAPI.Controllers
                     cmd.Parameters.Add("@EmpPosition", SqlDbType.VarChar).Value = user.Position;
                     cmd.Parameters.Add("@Doj", SqlDbType.VarChar).Value = user.DOJ;
                     cmd.Parameters.Add("@Salarey", SqlDbType.VarChar).Value = user.Salrey;
+                    cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = user.Email;
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     Response response = new Response();
                     if (dt.Rows.Count > 0)
                     {
-                        response.statusCode = 200;
-                        response.message = "Success";
-                        return JsonConvert.SerializeObject(response);
+                        response.dataResponseCode = Convert.ToInt32(dt.Rows[0]["dataResponseCode"]);
+                        if(response.dataResponseCode == 1)
+                        {
+                            response.statusCode = 200;
+                            response.message = "Data Added Success";
+                            return JsonConvert.SerializeObject(response);
+                        }
+                        else if(response.dataResponseCode == 2)
+                        {
+                            response.statusCode = 200;
+                            response.message = "Data Updated Success";
+                            return JsonConvert.SerializeObject(response);
+                        }
+                        else if(response.dataResponseCode == 3)
+                        {
+                            response.statusCode = 200;
+                            response.message = "Email Already Exist";
+                            return JsonConvert.SerializeObject(response);
+                        }
+                        else
+                        {
+                            response.statusCode = 200;
+                            response.message = "Duplicate Data Added";
+                            return JsonConvert.SerializeObject(response);
+                        }
+                     
                     }
                     else
                     {
