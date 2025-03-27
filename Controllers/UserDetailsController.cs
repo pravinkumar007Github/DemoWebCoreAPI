@@ -25,7 +25,8 @@ namespace DemoWebCoreAPI.Controllers
         [Route("GetAllUserDetails")]
         public string GetUserDetails()
         {
-            AppContext.SetSwitch("Switch.Microsoft.Data.SqlClient.EnableSqlServerPerformanceCounters", false);
+            AppContext.SetSwitch("Switch.Microsoft.Data.SqlClie" +
+                "nt.EnableSqlServerPerformanceCounters", false);
             string connectionString = "Server=PRAVIN_LAPTOP\\SQLEXPRESS;Database=EmployeeDB;User Id=sa;Password=pass@word1;Encrypt=True;TrustServerCertificate=True;";
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -54,6 +55,7 @@ namespace DemoWebCoreAPI.Controllers
                             users.Position = dt.Rows[i]["EmpPosition"].ToString();
                             users.DOJ = dt.Rows[i]["DateOfJoining"].ToString();
                             users.Salrey = dt.Rows[i]["Salray"].ToString();
+                            users.Email = dt.Rows[i]["EmpEmail"].ToString();
                             UserList.Add(users);
                         }
                         response.message = "Data Fetched Success";
@@ -125,6 +127,12 @@ namespace DemoWebCoreAPI.Controllers
                         {
                             response.statusCode = 200;
                             response.message = "Email Already Exist";
+                            return JsonConvert.SerializeObject(response);
+                        }
+                        else if (response.dataResponseCode == 4)
+                        {
+                            response.statusCode = 200;
+                            response.message = "Data Deleted Success";
                             return JsonConvert.SerializeObject(response);
                         }
                         else
