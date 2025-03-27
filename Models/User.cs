@@ -8,6 +8,8 @@ namespace DemoWebCoreAPI.Models
     public class User
     {
         public int Id { get; set; }
+
+        public string Flag { get; set; }
         public string EmpFname { get; set; }
         public string EmpLname { get; set; }
         public string Department { get; set; }
@@ -15,6 +17,10 @@ namespace DemoWebCoreAPI.Models
         public string Address { get; set; }
         public string DOB { get; set; }
         public string Gender { get; set; }
+        public string Position { get; set; }
+        public string DOJ { get; set; }
+        public string Salrey { get; set; }
 
+        public string Email { get; set; }
     }
 }
